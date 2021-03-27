@@ -26,6 +26,11 @@ class SIForm extends StatefulWidget {
 class SIFormState extends State<SIForm> {
   final minPadding = 5.0;
   var currencies = ["Rupees", "Pounds", "Dollars", "Euros"];
+  var currentCurrency = "Rupees";
+  TextEditingController principalController = new TextEditingController();
+  TextEditingController rateController = new TextEditingController();
+  TextEditingController timeController = new TextEditingController();
+  var displayText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,7 @@ class SIFormState extends State<SIForm> {
               Padding(
                   padding: EdgeInsets.only(top: minPadding, bottom: minPadding),
                   child: TextField(
+                    controller: principalController,
                     decoration: InputDecoration(
                         labelText: "Principal",
                         hintText: "Enter Principal eg: 2000",
@@ -53,6 +59,7 @@ class SIFormState extends State<SIForm> {
               Padding(
                 padding: EdgeInsets.only(top: minPadding, bottom: minPadding),
                 child: TextField(
+                  controller: rateController,
                   decoration: InputDecoration(
                       labelText: "Rate",
                       hintText: "Enter Rate in Percent",
@@ -68,6 +75,7 @@ class SIFormState extends State<SIForm> {
                       padding:
                           EdgeInsets.only(right: minPadding, top: minPadding),
                       child: TextField(
+                        controller: timeController,
                         decoration: InputDecoration(
                             labelText: "Time",
                             hintText: "Enter Time in Years",
@@ -87,8 +95,10 @@ class SIFormState extends State<SIForm> {
                               child: Text(value), value: value);
                         },
                       ).toList(),
-                      value: "Rupees",
-                      onChanged: (String newValue) {},
+                      value: currentCurrency,
+                      onChanged: (String newValue) {
+                        DropdownItemSelected(newValue);
+                      },
                     ),
                   ))
                 ],
@@ -104,7 +114,11 @@ class SIFormState extends State<SIForm> {
                                   color: Colors.deepPurple,
                                   textColor: Colors.white,
                                   child: Text("Calculate",textScaleFactor: 1.5),
-                                  onPressed: null))),
+                                  onPressed: (){
+                                    setState(() {
+                                      this.displayText = calculateTotalReturns();
+                                    });
+                                  }))),
                       Expanded(
                           child: Container(
                               padding: EdgeInsets.only(left: minPadding),
@@ -112,17 +126,27 @@ class SIFormState extends State<SIForm> {
                                   color: Colors.deepPurple,
                                   textColor: Colors.white,
                                   child: Text("Reset",textScaleFactor: 1.5),
-                                  onPressed: null)))
+                                  onPressed: (){
+                                    setState(() {
+                                      resetFields();
+                                    });
+                                  })))
                     ],
                   )),
               Padding(
                   padding: EdgeInsets.all(minPadding),
-                  child: Center(child: Text("Todo Text")))
+                  child: Center(
+                      child: Text(this.displayText)))
             ],
           ),
         ));
   }
 
+  void DropdownItemSelected(String newValue){
+    setState(() {
+      this.currentCurrency = newValue;
+    });
+  }
   Widget getImageAsset() {
     AssetImage assetImage = AssetImage('images/money_.jpeg');
     Image image = Image(image: assetImage, height: 200.0, width: 200.0);
@@ -130,5 +154,20 @@ class SIFormState extends State<SIForm> {
       child: image,
       margin: EdgeInsets.all(minPadding),
     );
+  }
+  String calculateTotalReturns(){
+    double principal = double.parse(principalController.text);
+    double rate = double.parse(rateController.text);
+    double time = double.parse(timeController.text);
+    double totalAmountPayable = principal + (principal * rate * time)/1000;
+    return "After $time year of investment your investment will be worth $totalAmountPayable $currentCurrency";
+  }
+  void resetFields(){
+    this.principalController.text = '';
+    this.timeController.text = '';
+    this.rateController.text = '';
+    this.currentCurrency = '';
+    this.displayText = '';
+
   }
 }
