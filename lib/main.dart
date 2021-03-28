@@ -26,7 +26,13 @@ class SIForm extends StatefulWidget {
 class SIFormState extends State<SIForm> {
   final minPadding = 5.0;
   var currencies = ["Rupees", "Pounds", "Dollars", "Euros"];
-  var currentCurrency = "Rupees";
+  var currentCurrency;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentCurrency = currencies[0];
+  }
   TextEditingController principalController = new TextEditingController();
   TextEditingController rateController = new TextEditingController();
   TextEditingController timeController = new TextEditingController();
@@ -192,7 +198,7 @@ class SIFormState extends State<SIForm> {
     this.principalController.text = '';
     this.timeController.text = '';
     this.rateController.text = '';
-    this.currentCurrency = '';
+    this.currentCurrency = currencies[0];
     this.displayText = '';
   }
 }
