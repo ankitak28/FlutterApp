@@ -4,6 +4,8 @@ A new Flutter application.
 
 This application is my first flutter app that uses all the basic stateless as well as stateful widgets like MaterialApp, Scaffold, Row, Column, Center, Expanded, Text, Textfield and Dropdown widgets. It is a very basic flutter app that gets you understand flutter from scratch.
 
+![Screenshot_2021-03-28-15-03-59-557_com example sic_calculator](https://user-images.githubusercontent.com/32640080/112748408-03d68e00-8fd9-11eb-827a-ad55108aa6be.jpg)
+
 
 
 ## Getting Started
